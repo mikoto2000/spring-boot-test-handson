@@ -1,10 +1,10 @@
 package dev.mikoto2000.handson.springboot.test.firststep.user.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -62,29 +62,37 @@ class UserCreateRequestValidationTest {
   @Nested
   @DisplayName("異常系")
   class ErrorCases {
+
+    // username の異常系は境界値でカバーできるので無し
+
     @Test
-    @DisplayName("不正な値なら違反が返る")
-    void validate_ng() {
-      // Arrange
+    @DisplayName("email の形式が不正なら違反")
+    void email_format_ng() {
+      // Arrange:
+      // email だけ不正にし、他の項目は妥当値に固定する
       UserCreateRequest request = new UserCreateRequest(
-          "",
+          "test",
           "abc",
-          "123"
+          "password123"
           );
 
       // Act
       Set<ConstraintViolation<UserCreateRequest>> violations = validator.validate(request);
 
-      // Assert
-      // エラー内容の順序は未定義なので、 Set にして contains で確認できるようにする
-      Set<String> paths = violations.stream()
-        .map(v -> v.getPropertyPath().toString())
-        .collect(Collectors.toSet());
+      // Assert 1:
+      // 今回は email だけを不正にしているので、違反が返るはず
+      assertFalse(violations.isEmpty(), "違反があるはず");
 
-      assertTrue(paths.contains("username"), "username の違反があるはず");
-      assertTrue(paths.contains("email"), "email の違反があるはず");
-      assertTrue(paths.contains("password"), "password の違反があるはず");
+      // Assert 2:
+      // email に対する違反であることを propertyPath で確認する
+      boolean emailPathFound = violations.stream()
+        .map(ConstraintViolation::getPropertyPath)
+        .anyMatch(path -> path.toString().contains("email"));
+
+      assertTrue(emailPathFound, "email の違反があるはず");
     }
+
+    // password の異常系は境界値でカバーできるので無し
   }
 
   @Nested
@@ -130,8 +138,6 @@ class UserCreateRequestValidationTest {
           "case=" + caseName + ", usernameLength=" + usernameLength + " のパスが期待と異なる"
           );
     }
-
-    // TODO: 他の項目の境界値テスト
   }
 
   /**
@@ -153,4 +159,6 @@ class UserCreateRequestValidationTest {
         Arguments.of("最大値+1", 21, true)
         );
   }
+
+  // TODO: 他の項目の境界値
 }
