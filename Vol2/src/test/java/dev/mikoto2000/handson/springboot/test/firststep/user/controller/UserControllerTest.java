@@ -23,7 +23,8 @@ import tools.jackson.databind.json.JsonMapper;
  * UserController の入力バリデーションを HTTP 層で検証するテスト。
  *
  * DTO 単体テストでは制約そのものを確認し、
- * ここでは @RequestBody + @Valid により HTTP 400 とエラーレスポンス形式に変換されることを確認する。
+ * ここでは @RequestBody + @Valid により想定した HTTP ステータスコードが返ることを確認する。
+ * エラーレスポンスの形式は ApiExceptionHandlerTest で確認する。
  */
 @WebMvcTest(UserController.class)
 class UserControllerTest {
