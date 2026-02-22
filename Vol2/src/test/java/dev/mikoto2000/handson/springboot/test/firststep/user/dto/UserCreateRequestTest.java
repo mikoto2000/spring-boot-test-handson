@@ -41,8 +41,7 @@ class UserCreateRequestValidationTest {
   @DisplayName("正常系")
   class NormalCases {
     @Test
-    @DisplayName("妥当な値なら違反なし")
-    void validate_ok() {
+    void test妥当な値なら違反なし() {
 
       // Arrange
       UserCreateRequest request = new UserCreateRequest(
@@ -66,8 +65,7 @@ class UserCreateRequestValidationTest {
     // username の異常系は境界値でカバーできるので無し
 
     @Test
-    @DisplayName("email の形式が不正なら違反")
-    void email_format_ng() {
+    void testEmailの形式が不正なら違反() {
       // Arrange:
       // email だけ不正にし、他の項目は妥当値に固定する
       UserCreateRequest request = new UserCreateRequest(
@@ -101,8 +99,7 @@ class UserCreateRequestValidationTest {
 
     @ParameterizedTest(name = "[{index}] {0}: username長={1} → username違反={2}")
     @MethodSource("dev.mikoto2000.handson.springboot.test.firststep.user.dto.UserCreateRequestValidationTest#usernameLengthBoundaryCases")
-    @DisplayName("username の文字数境界")
-    void username_length_boundary(String caseName, int usernameLength, boolean expectedViolation) {
+    void testUsernameの文字数境界(String caseName, int usernameLength, boolean expectedViolation) {
       // Arrange:
       // username だけを境界値として変化させる
       // email / password は常に妥当値に固定し、判定対象を username に絞る
