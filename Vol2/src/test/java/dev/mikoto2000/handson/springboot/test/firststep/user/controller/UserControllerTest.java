@@ -42,7 +42,7 @@ class UserControllerTest {
       var request = new UserCreateRequest(
           "test",
           "test@example.com",
-          "password1234"
+          "password123"
           );
 
       var body = jsonMapper.writeValueAsString(request);
@@ -74,7 +74,7 @@ class UserControllerTest {
       var request = new UserCreateRequest(
           "",
           "test@example.com",
-          "password1234"
+          "password123"
           );
 
       var body = jsonMapper.writeValueAsString(request);

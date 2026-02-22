@@ -1,4 +1,4 @@
-package dev.mikoto2000.handson.springboot.test.firststep.user.common.advice;
+package dev.mikoto2000.handson.springboot.test.firststep.common.advice;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,7 +53,7 @@ class ApiExceptionHandlerTest {
     var request = new UserCreateRequest(
         "",
         "test@example.com",
-        "password1234"
+        "password123"
         );
 
     String body = jsonMapper.writeValueAsString(request);
