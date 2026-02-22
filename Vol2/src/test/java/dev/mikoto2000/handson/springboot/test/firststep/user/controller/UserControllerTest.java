@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import dev.mikoto2000.handson.springboot.test.firststep.common.dto.ApiErrorResponse;
 import dev.mikoto2000.handson.springboot.test.firststep.user.dto.UserCreateRequest;
 import dev.mikoto2000.handson.springboot.test.firststep.user.dto.UserCreateResponse;
 import tools.jackson.databind.json.JsonMapper;
@@ -87,33 +86,6 @@ class UserControllerTest {
         .andExpect(status().isBadRequest());
     }
 
-    @Test
-    void test400が返る場合Adviceによりレスポンス型が決まる() throws Exception {
-      var request = new UserCreateRequest(
-          "",
-          "test@example.com",
-          "password1234"
-          );
-
-      var body = jsonMapper.writeValueAsString(request);
-
-      MvcResult result = mockMvc.perform(post("/users")
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(body))
-        // HTTP ステータスの確認
-        .andExpect(status().isBadRequest())
-        .andReturn();
-
-      // 期待通りの型か、JsonMapper で変換することにより確認する
-      ApiErrorResponse response = assertDoesNotThrow(
-          () -> jsonMapper.readValue(result.getResponse().getContentAsString(), ApiErrorResponse.class),
-          "ApiErrorResponse に変換できるはず");
-
-      // 型の内容が期待通りか確認する
-      assertEquals("VALIDATION_ERROR", response.getCode());
-      assertEquals("入力値が不正です", response.getMessage());
-      // username の NotBlank と Size の分で二つエラーになる
-      assertEquals(2, response.getErrors().size(), "username のエラーは 2 件のはず");
-    }
+    // レスポンスの型を確認するテストは ApiExceptionHandlerTest に任せる
   }
 }

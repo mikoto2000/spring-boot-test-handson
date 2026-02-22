@@ -24,7 +24,7 @@ import jakarta.validation.ValidatorFactory;
  * DTO の Bean Validation を Spring を起動せずに検証するテスト。
  */
 @DisplayName("UserCreateRequest の Bean Validation")
-class UserCreateRequestValidationTest {
+class UserCreateRequestTest {
 
   // バリデーションを実行するためのバリデーター
   private static Validator validator;
@@ -98,7 +98,7 @@ class UserCreateRequestValidationTest {
   class BoundaryCases {
 
     @ParameterizedTest(name = "[{index}] {0}: username長={1} → username違反={2}")
-    @MethodSource("dev.mikoto2000.handson.springboot.test.firststep.user.dto.UserCreateRequestValidationTest#usernameLengthBoundaryCases")
+    @MethodSource("dev.mikoto2000.handson.springboot.test.firststep.user.dto.UserCreateRequestTest#usernameLengthBoundaryCases")
     void testUsernameの文字数境界(String caseName, int usernameLength, boolean expectedViolation) {
       // Arrange:
       // username だけを境界値として変化させる
